@@ -1,6 +1,0 @@
-env: "local"
-storage_dsn: "postgres://localhost:5432/sso?user=postgres&password=sso"
-token_ttl: "1h"
-grpc:
-  port: 33088
-  timeout: "1h"

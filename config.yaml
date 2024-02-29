@@ -1,0 +1,14 @@
+app:
+  env: "local"
+  port: 8080
+  read_header_timeout: "10s"
+
+jwt:
+  token_ttl: "1h"
+
+grpc:
+  port: 33088
+  timeout: "1h"
+  
+storage:
+  dsn: "postgres://localhost:5432/sso?user=postgres&password=sso"

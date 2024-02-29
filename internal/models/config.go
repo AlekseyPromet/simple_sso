@@ -1,15 +1,33 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"go.uber.org/config"
+	"go.uber.org/fx"
+)
 
 type Config struct {
-	Env       TypeEnv       `yaml:"env,omitempty" env-default:"local"`
-	StorgeDsn string        `yaml:"storge_dsn,required"`
-	TokenTTL  time.Duration `yaml:"token_ttl,required"`
-	Grpc
+	Env               string        `yaml:"env" default:"local"`
+	Port              string        `yaml:"port" default:"8080"`
+	ReadHeaderTimeout time.Duration `yaml:"read_header_timeout" default:"10s"`
 }
 
-type Grpc struct {
+type JWTConfig struct {
+	TokenTTL time.Duration `yaml:"token_ttl" default:"30m"`
+}
+
+type GrpcConfig struct {
 	Port    string        `yaml:"port"`
 	Timeout time.Duration `yaml:"timeout"`
+}
+
+type StorageConfig struct {
+	StorgeDsn string `yaml:"storge_dsn,required"`
+}
+
+type ResultConfig struct {
+	fx.Out
+	Provider config.Provider
+	Config   *Config
 }

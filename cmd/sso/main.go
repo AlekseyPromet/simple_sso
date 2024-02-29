@@ -1,9 +1,9 @@
 package main
 
 import (
-	"AlekseyPromet/authorization/internal/config"
+	"AlekseyPromet/authorization/internal/app"
 )
 
 func main() {
-	config.Execute()
+	app.NewApp().Run()
 }
