@@ -5,6 +5,6 @@ tasks:
         aliases:
             - gen
         desc: "Generate code from protobuf files"
-        cmds: protoc --go_out=./internal/gen/v1 --go_opt=paths=source_relative \
-            --go-grpc_out=./internal/gen/v1 --go-grpc_opt=paths=source_relative \
+        cmds: protoc --go_out=./internal/gen/ssov1 --go_opt=paths=source_relative \
+            --go-grpc_out=./internal/gen/ssov1 --go-grpc_opt=paths=source_relative \
             ./contracts/auth.proto

@@ -48,15 +48,16 @@ func NewModule() fx.Option {
 
 func NewGrpcConfig() (models.GrpcConfig, error) {
 	var cfg models.GrpcConfig
+	const op = "confg grpc loader failed"
 
 	loader, err := config.NewYAML(config.File("config.yaml"))
 	if err != nil {
-		return cfg, fmt.Errorf("confg loader failed: %w", err)
+		return cfg, fmt.Errorf("%s: %w", op, err)
 	}
 
 	err = loader.Get("grpc").Populate(&cfg)
 	if err != nil {
-		return cfg, fmt.Errorf("grpc config: %w", err)
+		return cfg, fmt.Errorf("%s: %w", op, err)
 	}
 
 	return cfg, nil

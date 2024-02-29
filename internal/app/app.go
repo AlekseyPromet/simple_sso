@@ -5,6 +5,7 @@ import (
 	"AlekseyPromet/authorization/internal/config"
 	"AlekseyPromet/authorization/internal/models"
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
@@ -38,7 +39,7 @@ func NewApp() *fx.App {
 			func(lc fx.Lifecycle, api *ApiV1) {
 				lc.Append(fx.Hook{
 					OnStart: func(ctx context.Context) error {
-						go api.Server.ListenAndServe()
+						go api.MustRun()
 
 						return nil
 					},
@@ -85,5 +86,11 @@ func NewHttpSrever(logger *zap.Logger, cfg models.Config) *ApiV1 {
 		Server: srv,
 		logger: logger,
 		Config: cfg,
+	}
+}
+
+func (a *ApiV1) MustRun() {
+	if err := a.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+		a.logger.Sugar().Panicf("Failed to start api server: %v", err)
 	}
 }
