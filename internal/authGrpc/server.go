@@ -1,7 +1,7 @@
 package authGrpc
 
 import (
-	ssov1 "AlekseyPromet/authorization/internal/gen/ssov1/contratcs"
+	ssov1 "AlekseyPromet/authorization/internal/gen/ssov1/contracts"
 	"AlekseyPromet/authorization/internal/models"
 	"context"
 	"fmt"
