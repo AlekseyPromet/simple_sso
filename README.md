@@ -1,0 +1,1 @@
+# Simple SSO service over grpc

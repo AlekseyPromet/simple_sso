@@ -1,0 +1,16 @@
+app:
+  env: "local"
+  port: 8080
+  read_header_timeout: "10s"
+
+jwt:
+  token_ttl: "1h"
+
+grpc:
+  port: 33088
+  timeout: "1h"
+  
+storage:
+  dsn: "mongodb://sso-user:sso-password@localhost:27017/sso"
+  database: "sso"
+  collection: "sso"

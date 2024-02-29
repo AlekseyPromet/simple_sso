@@ -4,7 +4,7 @@
 // - protoc             v3.12.4
 // source: contracts/auth.proto
 
-package ssov1
+package contracts
 
 import (
 	context "context"
