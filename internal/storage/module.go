@@ -1,8 +1,7 @@
-package authGrpc
+package storage
 
 import (
 	"AlekseyPromet/authorization/internal/models"
-	"AlekseyPromet/authorization/internal/storage"
 	"context"
 	"fmt"
 	"time"
@@ -10,56 +9,49 @@ import (
 	"go.uber.org/config"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
-	"google.golang.org/grpc"
 )
 
 func NewModule() fx.Option {
 
-	service := &GrpcServerApiV1{}
+	storage := &MongoStorage{}
 
 	return fx.Module(
-		"grpc server",
-		fx.Options(
-			storage.NewModule(),
-		),
-		fx.Provide(NewGrpcConfig),
+		"storage",
+		fx.Provide(NewStorageConfig),
+		fx.Provide(storage.New),
 		fx.Invoke(
-			func(lc fx.Lifecycle, cfg models.GrpcConfig, storage *storage.MongoStorage) {
+			func(lc fx.Lifecycle, cfg models.StorageConfig) {
 				lc.Append(fx.Hook{
 					OnStart: func(ctx context.Context) error {
 
-						Register(grpc.NewServer())
-
-						go service.Run(cfg, storage)
-
-						return nil
+						return storage.Run(ctx, cfg)
 					},
 					OnStop: func(ctx context.Context) error {
 
 						ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
 						defer cancel()
 
-						return service.Shutdown(ctx)
+						return storage.Shutdown(ctx)
 					},
 				})
 			},
 		),
 		fx.Decorate(func(log *zap.Logger) *zap.Logger {
-			return log.Named("grpc")
+			return log.Named("storage")
 		}),
 	)
 }
 
-func NewGrpcConfig() (models.GrpcConfig, error) {
-	var cfg models.GrpcConfig
-	const op = "confg grpc loader failed"
+func NewStorageConfig() (models.StorageConfig, error) {
+	var cfg models.StorageConfig
+	const op = "confg storage loader failed"
 
 	loader, err := config.NewYAML(config.File("config.yaml"))
 	if err != nil {
 		return cfg, fmt.Errorf("%s: %w", op, err)
 	}
 
-	err = loader.Get("grpc").Populate(&cfg)
+	err = loader.Get("storage").Populate(&cfg)
 	if err != nil {
 		return cfg, fmt.Errorf("%s: %w", op, err)
 	}

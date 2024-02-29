@@ -23,7 +23,9 @@ type GrpcConfig struct {
 }
 
 type StorageConfig struct {
-	StorgeDsn string `yaml:"storge_dsn,required"`
+	StorgeDsn  string `yaml:"dsn"`
+	Collection string `yaml:"collection"`
+	Database   string `yaml:"database"`
 }
 
 type ResultConfig struct {

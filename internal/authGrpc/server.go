@@ -18,24 +18,21 @@ const emptyValue = 0
 
 type GrpcServerApiV1 struct {
 	ssov1.UnimplementedAuthServer
-	lisner net.Listener
+	lisner  net.Listener
+	storage models.IStorage
 }
 
 func Register(gRPC *grpc.Server) {
 	ssov1.RegisterAuthServer(gRPC, &GrpcServerApiV1{})
 }
 
-func (srv *GrpcServerApiV1) Register(ctx context.Context, req *ssov1.RegisterRequest) (resp *ssov1.RegisterResponse, err error) {
-	return resp, nil
-}
-
-func (srv *GrpcServerApiV1) Logining(ctx context.Context, req *ssov1.LoginRequest) (*ssov1.LoginResponse, error) {
+func (srv *GrpcServerApiV1) Register(ctx context.Context, req *ssov1.RegisterRequest) (*ssov1.RegisterResponse, error) {
 
 	if req.GetEmail() == "" {
 		return nil, status.Error(codes.InvalidArgument, "email is required")
 	}
 
-	_, err := mail.ParseAddress(req.GetEmail())
+	email, err := mail.ParseAddress(req.GetEmail())
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, "it is'n valid email")
 	}
@@ -58,6 +55,37 @@ func (srv *GrpcServerApiV1) Logining(ctx context.Context, req *ssov1.LoginReques
 		return nil, status.Error(codes.InvalidArgument, "password not correct, it is not conteined special character")
 	}
 
+	userId, err := srv.storage.Register(ctx, models.User{
+		Email:    email.String(),
+		Password: req.GetPassword(),
+	})
+
+	if err != nil {
+		return nil, status.Error(codes.Unknown, "register failed")
+	}
+
+	resp := &ssov1.RegisterResponse{
+		UserId: userId.String(),
+	}
+
+	return resp, nil
+}
+
+func (srv *GrpcServerApiV1) Logining(ctx context.Context, req *ssov1.LoginRequest) (*ssov1.LoginResponse, error) {
+
+	if req.GetEmail() == "" {
+		return nil, status.Error(codes.InvalidArgument, "email is required")
+	}
+
+	_, err := mail.ParseAddress(req.GetEmail())
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, "it is'n valid email")
+	}
+
+	if req.GetPassword() == "" {
+		return nil, status.Error(codes.InvalidArgument, "password is required")
+	}
+
 	if req.GetAppId() == emptyValue {
 		return nil, status.Error(codes.InvalidArgument, "app id is required")
 	}
@@ -68,7 +96,7 @@ func (srv *GrpcServerApiV1) Logining(ctx context.Context, req *ssov1.LoginReques
 	return resp, nil
 }
 
-func (srv *GrpcServerApiV1) Run(cfg models.GrpcConfig) error {
+func (srv *GrpcServerApiV1) Run(cfg models.GrpcConfig, storage models.IStorage) error {
 	const op = "authGrpc.Run"
 
 	listner, err := net.Listen("tcp", ":"+cfg.Port)
@@ -76,6 +104,7 @@ func (srv *GrpcServerApiV1) Run(cfg models.GrpcConfig) error {
 		return fmt.Errorf("%s %v", op, err)
 	}
 	srv.lisner = listner
+	srv.storage = storage
 
 	return nil
 }
