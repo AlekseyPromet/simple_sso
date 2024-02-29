@@ -8,5 +8,5 @@ type User struct {
 type LoginPass struct {
 	AppID    string `bson:"appId"`
 	Email    string `bson:"email"`
-	Password string `bson:"password"`
+	Password []byte `bson:"password"`
 }
