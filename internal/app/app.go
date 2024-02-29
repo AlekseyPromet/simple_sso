@@ -1,8 +1,8 @@
 package app
 
 import (
+	"AlekseyPromet/authorization/internal/authGrpc"
 	"AlekseyPromet/authorization/internal/config"
-	"AlekseyPromet/authorization/internal/grpc"
 	"AlekseyPromet/authorization/internal/models"
 	"context"
 	"fmt"
@@ -24,7 +24,7 @@ type ApiV1 struct {
 func NewApp() *fx.App {
 	return fx.New(
 		fx.Options(
-			grpc.NewModule(),
+			authGrpc.NewModule(),
 		),
 		fx.Provide(config.NewConfig),
 		fx.Provide(zap.NewDevelopment),
