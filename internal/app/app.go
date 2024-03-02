@@ -1,9 +1,9 @@
 package app
 
 import (
-	"AlekseyPromet/authorization/internal/authGrpc"
-	"AlekseyPromet/authorization/internal/config"
-	"AlekseyPromet/authorization/internal/models"
+	"AlekseyPromet/simple_sso/internal/authGrpc"
+	"AlekseyPromet/simple_sso/internal/config"
+	"AlekseyPromet/simple_sso/internal/models"
 	"context"
 	"errors"
 	"fmt"

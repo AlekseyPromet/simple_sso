@@ -1,8 +1,8 @@
 package authGrpc
 
 import (
-	ssov1 "AlekseyPromet/authorization/internal/gen/ssov1/contracts"
-	"AlekseyPromet/authorization/internal/models"
+	ssov1 "AlekseyPromet/simple_sso/internal/gen/ssov1/contracts"
+	"AlekseyPromet/simple_sso/internal/models"
 	"net"
 
 	"google.golang.org/grpc"

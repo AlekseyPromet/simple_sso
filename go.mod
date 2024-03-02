@@ -1,4 +1,4 @@
-module AlekseyPromet/authorization
+module AlekseyPromet/simple_sso
 
 go 1.22.0
 

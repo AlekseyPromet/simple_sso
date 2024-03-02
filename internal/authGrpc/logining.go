@@ -1,7 +1,7 @@
 package authGrpc
 
 import (
-	ssov1 "AlekseyPromet/authorization/internal/gen/ssov1/contracts"
+	ssov1 "AlekseyPromet/simple_sso/internal/gen/ssov1/contracts"
 	"context"
 	"net/mail"
 

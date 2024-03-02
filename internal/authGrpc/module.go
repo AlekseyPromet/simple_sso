@@ -1,8 +1,8 @@
 package authGrpc
 
 import (
-	"AlekseyPromet/authorization/internal/models"
-	"AlekseyPromet/authorization/internal/storage"
+	"AlekseyPromet/simple_sso/internal/models"
+	"AlekseyPromet/simple_sso/internal/storage"
 	"context"
 	"fmt"
 	"time"

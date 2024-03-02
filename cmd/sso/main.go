@@ -1,7 +1,7 @@
 package main
 
 import (
-	"AlekseyPromet/authorization/internal/app"
+	"AlekseyPromet/simple_sso/internal/app"
 )
 
 func main() {

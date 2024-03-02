@@ -1,7 +1,7 @@
 package config
 
 import (
-	"AlekseyPromet/authorization/internal/models"
+	"AlekseyPromet/simple_sso/internal/models"
 	"fmt"
 
 	uber "go.uber.org/config"

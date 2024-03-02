@@ -1,7 +1,7 @@
 package storage
 
 import (
-	"AlekseyPromet/authorization/internal/models"
+	"AlekseyPromet/simple_sso/internal/models"
 	"context"
 	"fmt"
 	"time"
